@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 500px;
+    width: 100%;
+    background-color: grey;
+    padding: 5px;
+}
+
+.formFields {
+    width: 100%;
+    padding: 2px;
+    font-size: 1.5rem;
+    text-align: center;
+}

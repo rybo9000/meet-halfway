@@ -1,0 +1,8 @@
+Google Map find lat - long between two people
+
+send that information to fandango to find a movie theater close to the halfway mark
+
+
+
+
+
