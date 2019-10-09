@@ -4,5 +4,9 @@ send that information to fandango to find a movie theater close to the halfway m
 
 
 
+http://developer.tmsapi.com/docs/data_v1_1/movies/Theatres_by_postal_code
+
+
+
 
 
