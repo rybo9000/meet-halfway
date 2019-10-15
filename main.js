@@ -40,17 +40,35 @@ function middlePoint(lat1, lng1, lat2, lng2) {
 }
 
 
+//==========FUNCTION TO FETCH THE CLOSEST MID-POINT THEATER
+            
+
+function initMap() {
+                
+    const locPoint = {lat: latLon.locLat, lng: latLon.locLon};
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 18, center: locPoint, zoomControl: false, mapTypeControl: false, streetViewControl: false, fullscreenControl: false});
+                
+}
 
 //==========FUNCTION TO FETCH THE CLOSEST MID-POINT THEATER
 
 
 function fetchTheater() {
-    console.log("Fetching Theaters");
-    fetch(`https://api.foursquare.com/v2/venues/explore?v=20180323&limit=1&client_id=3HAKABTDGMV2KP5GQRRPIPENXJF2POJ01OVEGMKYQ4TLTYIL&client_secret=FHS1XXWEWLUPUEDHYWBFA3NG0HIVBEKLN1P5VRYHF2NDI2NJ&limit=5&ll=${latLon.midLat},${latLon.midLon}&categoryId=4bf58dd8d48988d17f941735&radius=5000`)
+
+    fetch(`https://api.foursquare.com/v2/venues/explore?v=20180323&limit=1&client_id=3HAKABTDGMV2KP5GQRRPIPENXJF2POJ01OVEGMKYQ4TLTYIL&client_secret=FHS1XXWEWLUPUEDHYWBFA3NG0HIVBEKLN1P5VRYHF2NDI2NJ&limit=5&ll=${latLon.midLat},${latLon.midLon}&categoryId=4bf58dd8d48988d180941735,4bf58dd8d48988d17e941735&radius=16090`)
     .then(response => response.json())
     .then(response => {
-        console.log(response);
-       drawResults(response.response.groups[0].items[0].venue.name, response.response.groups[0].items[0].venue.location.formattedAddress[0] + " " + response.response.groups[0].items[0].venue.location.formattedAddress[1]);
+
+        if (response.response.groups[0].items.length > 0) {
+            latLon.locLat = response.response.groups[0].items[0].venue.location.lat;
+            latLon.locLon = response.response.groups[0].items[0].venue.location.lng;
+            drawResults(response.response.groups[0].items[0].venue.name, response.response.groups[0].items[0].venue.location.formattedAddress[0], response.response.groups[0].items[0].venue.location.formattedAddress[1]);
+        }
+
+        else {
+            drawNoResults();
+        }
+
     })
     
 }
@@ -60,29 +78,47 @@ function fetchTheater() {
 
 
 function fetchRestaurant() {
-    const options = {
-        headers : new Headers({
-            "user-key": "e0e7b415b5ce59c3c9d0103f1b7ef4f6"
-        })
-    };
-    console.log("Fetching Restaurants");
-    fetch(`https://developers.zomato.com/api/v2.1/search?lat=${latLon.midLat}&lon=${latLon.midLon}&radius=5000&count=5`, options)
+    
+    fetch(`https://api.foursquare.com/v2/venues/explore?v=20180323&limit=1&client_id=3HAKABTDGMV2KP5GQRRPIPENXJF2POJ01OVEGMKYQ4TLTYIL&client_secret=FHS1XXWEWLUPUEDHYWBFA3NG0HIVBEKLN1P5VRYHF2NDI2NJ&limit=5&ll=${latLon.midLat},${latLon.midLon}&categoryId=4d4b7105d754a06374d81259&radius=16090`)
     .then(response => response.json())
-    .then (response => {
-        console.log(response);
-        drawResults(response.restaurants[0].restaurant.name, response.restaurants[0].restaurant.location.address, response.restaurants[0].restaurant.phone_numbers)
+    .then(response => {
+   
+        
+        if (response.response.groups[0].items.length > 0) {
+        
+            latLon.locLat = response.response.groups[0].items[0].venue.location.lat;
+            latLon.locLon = response.response.groups[0].items[0].venue.location.lng;
+            drawResults(response.response.groups[0].items[0].venue.name, response.response.groups[0].items[0].venue.location.formattedAddress[0], response.response.groups[0].items[0].venue.location.formattedAddress[1]);
+
+        }
+
+        else {
+            drawNoResults();
+        }
     })
+
 }
 
 
 //==========FUNCTION TO FETCH THE CLOSEST COFFEE SHOP
 
 function fetchCoffee() {
-    fetch(`https://api.foursquare.com/v2/venues/explore?v=20180323&limit=1&client_id=3HAKABTDGMV2KP5GQRRPIPENXJF2POJ01OVEGMKYQ4TLTYIL&client_secret=FHS1XXWEWLUPUEDHYWBFA3NG0HIVBEKLN1P5VRYHF2NDI2NJ&limit=5&ll=${latLon.midLat},${latLon.midLon}&categoryId=4bf58dd8d48988d1e0931735&radius=2000`)
+    fetch(`https://api.foursquare.com/v2/venues/explore?v=20180323&limit=1&client_id=3HAKABTDGMV2KP5GQRRPIPENXJF2POJ01OVEGMKYQ4TLTYIL&client_secret=FHS1XXWEWLUPUEDHYWBFA3NG0HIVBEKLN1P5VRYHF2NDI2NJ&limit=5&ll=${latLon.midLat},${latLon.midLon}&categoryId=4bf58dd8d48988d1e0931735&radius=16090`)
     .then(response => response.json())
     .then(response => {
-        console.log(response);
-       drawResults(response.response.groups[0].items[0].venue.name, response.response.groups[0].items[0].venue.location.formattedAddress[0] + " " + response.response.groups[0].items[0].venue.location.formattedAddress[1]);
+
+        
+        if (response.response.groups[0].items.length > 0) {
+        
+            latLon.locLat = response.response.groups[0].items[0].venue.location.lat;
+            latLon.locLon = response.response.groups[0].items[0].venue.location.lng;
+            drawResults(response.response.groups[0].items[0].venue.name, response.response.groups[0].items[0].venue.location.formattedAddress[0], response.response.groups[0].items[0].venue.location.formattedAddress[1]);
+
+        }
+
+        else {
+            drawNoResults();
+        }
     })
 }
 
@@ -94,92 +130,41 @@ function formatAddress(address) {
 }
 
 
-//==========FUNCTION TO CONVERT ADDRESS TO LONG / LAT
+//====RESTART BUTTON EVENT LISTENER
 
+function restartListener() {
 
-function convertAddress(address) {
-    let formattedAddress = formatAddress(address);
-    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=AIzaSyDSnQDkrg2Qt3OeyQ5-93-NTIU3lEWOVLU`)
-    .then(response => response.json())
-    .then(response => {
+    document.querySelector("#restart").addEventListener("click", (e) => {
+        
+        e.preventDefault();
+            
+        drawMain();
 
-        console.log(response);
-        return response;
+        submitListener();
+
+        firstListener();
+
+        secondListener();
+
+        window.google = {};
+                
+                        
     })
+
 }
 
 
-//==========FUNCTION TO TOGGLE THE SUBMIT BUTTON TO ENABLED / DISABLED BASED ON UI CONDITIONS
+//====SUBMIT BUTTON EVENT LISTENER
 
-
-function toggleSubmit() {
-    
-    if (document.querySelector("#firstAddress").value !== "" && document.querySelector("#secondAddress").value !== "" ) {
-
-        console.log("Submit Button Enabled");
-        document.querySelector("#submit").disabled = false;
-    }
-
-    else {
-        console.log("Submit Button Disabled");
-        document.querySelector("#submit").disabled = true;
-    }
-}
-
-
-//==========FUNCTION TO DRAW MAIN PAGE
-
-function drawMain() {
-    document.querySelector("#content").innerHTML = `                
-        <p>This application helps you find an activity midway between two addresses.</p>
-        <form>
-            <p><label for="firstAddress">Your Location</label></p>
-            <p><input type="text" id="firstAddress" class="formFields"></p>
-            <p><label for="secondAddress">Their Location</label></p>
-            <p><input type="text" id="secondAddress" class="formFields"></p>
-            <p><label for="activity">I want to...</label></p>
-            <p>
-                <select id="activity" class="formFields">
-                    <option value="movie">See A Movie</option>
-                    <option value="restaurant">Eat At A Restaurant</option>
-                    <option value="coffee">Grab A Coffee</option>
-                </select>
-            </p>
-            <p><button type="submit" id="submit" class="formFields">Submit</button></p>
-        </form>`
-}
-
-
-//==========FUNCTION TO DRAW RESULTS PAGE
-
-function drawResults(name, address, number) {
-    document.querySelector("#content").innerHTML = `                
-        <h2>You Should Meet At...</h2>
-        <p>${name}</p>
-        <p>${address}</p>
-        <p>${number}</p>
-        <p><form><button type="submit" class="formFields">Search Again</button></p>`
-}
-
-
-//==========WAIT UNTIL DOM HAS LOADED THEN CALL REQUIRED FUNCTIONS
-
-
-window.addEventListener("DOMContentLoaded", (e) => {
-    
-    drawMain();
-    
-    toggleSubmit();
-    
-    //====SUBMIT BUTTON EVENT LISTENER
+function submitListener() {
 
     document.querySelector("#submit").addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("Submit Button Clicked!");
+ 
         middlePoint(latLon.firstLat, latLon.firstLon, latLon.secondLat, latLon.secondLon);
-        console.log("Middle Point Coordinates are " + latLon.midLat + ", " + latLon.midLon);
+  
         
-        console.log("The value selected in the dropdown is " + document.querySelector("#activity").value);
+
         
         if (document.querySelector("#activity").value === "movie") {
             fetchTheater();
@@ -194,8 +179,12 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
         
     })
-    
-    //====FIRST ADDRESS TEXT INPUT EVENT LISTENER
+
+}
+
+//====FIRST ADDRESS LISTENER
+
+function firstListener() {
     
     document.querySelector("#firstAddress").addEventListener("blur", (e) => {
         
@@ -203,14 +192,22 @@ window.addEventListener("DOMContentLoaded", (e) => {
         .then ((response) => {
             e.target.value = response.results[0].formatted_address;
             latLon.firstLat = response.results[0].geometry.location.lat;
-            console.log("First lattitude is " + latLon.firstLat);
+  
             latLon.firstLon = response.results[0].geometry.location.lng;
-            console.log("First longitude is " + latLon.firstLon);
+    
         })
+        
         toggleSubmit();
 
     })
 
+}
+
+
+//====SECOND ADDRESS LISTENER
+
+function secondListener() {
+    
     //====SECOND ADDRESS TEXT INPUT EVENT LISTENER
 
     document.querySelector("#secondAddress").addEventListener("blur", (e) => {
@@ -219,11 +216,141 @@ window.addEventListener("DOMContentLoaded", (e) => {
         .then ((response) => {
             e.target.value = response.results[0].formatted_address;
             latLon.secondLat = response.results[0].geometry.location.lat;
-            console.log("Second lattitude is " + latLon.secondLat);
+  
             latLon.secondLon = response.results[0].geometry.location.lng;
-            console.log("Second longitude is " + latLon.secondLon);
+ 
         })
+        
         toggleSubmit();
 
     })
+
+}
+
+//==========FUNCTION TO CONVERT ADDRESS TO LONG / LAT
+
+
+function convertAddress(address) {
+    let formattedAddress = formatAddress(address);
+    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=AIzaSyDSnQDkrg2Qt3OeyQ5-93-NTIU3lEWOVLU`)
+    .then(response => response.json())
+    .then(response => {
+
+
+        return response;
+    })
+}
+
+
+//==========FUNCTION TO TOGGLE THE SUBMIT BUTTON TO ENABLED / DISABLED BASED ON UI CONDITIONS
+
+
+function toggleSubmit() {
+    
+    if (document.querySelector("#firstAddress").value !== "" && document.querySelector("#secondAddress").value !== "" ) {
+
+  
+        document.querySelector("#submit").disabled = false;
+    }
+
+    else {
+ 
+        document.querySelector("#submit").disabled = true;
+    }
+}
+
+function loadMap() {
+    
+    if (document.querySelector("#googleMapsScript")) {
+
+  
+        
+        document.querySelector("#googleMapsScript").parentNode.removeChild(document.querySelector("#googleMapsScript"));
+
+    }
+
+    const js_file = document.createElement("script");
+    js_file.type = 'text/javascript';
+    js_file.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSnQDkrg2Qt3OeyQ5-93-NTIU3lEWOVLU&callback=initMap";
+    js_file.id="googleMapsScript";
+    document.getElementsByTagName('head')[0].appendChild(js_file);
+
+}
+
+
+//==========FUNCTION TO DRAW MAIN PAGE
+
+function drawMain() {
+    document.querySelector(".content").innerHTML = `                
+        <p>Find a fun activity between two places!</p>
+        <form>
+            <fieldset>
+                <p class="lowerMargin"><label for="firstAddress">Your Address</label></p>
+                <p><input type="text" id="firstAddress" class="formFields" placeholder="3312 Park Street Dallas, TX 78654"></p>
+                <p class="lowerMargin"><label for="secondAddress">Their Address</label></p>
+                <p><input type="text" id="secondAddress" class="formFields" placeholder="1001 Smith Lane Plano, TX 76543"></p>
+                <p class="lowerMargin"><label for="activity">I want to...</label></p>
+                <p>
+                    <select id="activity" class="formFields">
+                        <option value="movie">See A Movie</option>
+                        <option value="restaurant">Eat At A Restaurant</option>
+                        <option value="coffee">Grab A Coffee</option>
+                    </select>
+                </p>
+                <p><button type="submit" id="submit" class="button">Submit</button></p>
+            </fieldset>
+        </form>`
+}
+
+
+//==========FUNCTION TO DRAW RESULTS PAGE
+
+function drawResults(name, addressStreet, addressCity) {
+    document.querySelector(".content").innerHTML = `                
+        <h2>You Should Meet At...</h2>
+        <div class="center">
+            <h3 class="lowerMargin">${name}</h3>
+            <p class="lowerMargin">${addressStreet}</p>
+            <p class="lowerMargin">${addressCity}</p>
+            <div id="map"></div>
+        </div>
+        <p><form><button type="submit" class="button" id="restart">Search Again</button></p>
+        `
+    loadMap();
+
+    restartListener();
+            
+}
+
+//==========FUNCTION TO DRAW NO RESULTS PAGE
+
+function drawNoResults() {
+    document.querySelector(".content").innerHTML = `                
+        <h2>Well, that's a bummer...</h2>
+        <div class="center">
+            <p>Unfortunately there is nothing found within 10 miles of your mid point</p>
+            <img src="img/field.jpg" id="field">
+        </div>
+        <p><form><button type="submit" class="button" id="restart">Search Again</button></p>
+        `
+
+        restartListener();
+}
+
+
+//==========WAIT UNTIL DOM HAS LOADED THEN CALL REQUIRED FUNCTIONS
+
+
+window.addEventListener("DOMContentLoaded", (e) => {
+    
+    drawMain();
+    
+    toggleSubmit();
+
+    submitListener();
+
+    firstListener();
+
+    secondListener();
+
 });
